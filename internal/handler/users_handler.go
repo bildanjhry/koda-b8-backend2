@@ -54,3 +54,38 @@ func (h *UserHandler) Create(ctx *gin.Context) {
 		},
 	})
 }
+
+func (h *UserHandler) Login(ctx *gin.Context) {
+	var form model.UserForm
+
+	errForm := ctx.ShouldBind(&form)
+	if errForm != nil {
+		ctx.JSON(http.StatusBadRequest, &lib.Response{
+			Success: false,
+			Status:  400,
+			Message: errForm.Error(),
+		})
+		return
+	}
+
+	res, errorCreate := h.svc.Login(&form)
+	if errorCreate != nil {
+		ctx.JSON(http.StatusBadRequest, &lib.Response{
+			Success: false,
+			Status:  http.StatusBadRequest,
+			Message: errorCreate.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, &lib.Response{
+		Success: true,
+		Status:  200,
+		Message: "Login Success",
+		Results: &model.Users{
+			Id:        res.Id,
+			Email:     res.Email,
+			CreatedAt: res.CreatedAt,
+		},
+	})
+}

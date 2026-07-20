@@ -13,6 +13,7 @@ func main() {
 	utils.LoadEnv()
 
 	r.POST("/register", userHandler.Create)
+	r.POST("/login", userHandler.Login)
 
 	r.Run("0.0.0.0:8080")
 }

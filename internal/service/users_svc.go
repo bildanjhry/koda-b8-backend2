@@ -28,3 +28,18 @@ func (r *UserService) Create(data *model.UserForm) (*model.Users, error) {
 		CreatedAt: res.CreatedAt,
 	}, nil
 }
+
+func (r *UserService) Login(data *model.UserForm) (*model.Users, error) {
+	if len(data.Password) < 5 {
+		return &model.Users{}, errors.New("Minimum password length 5")
+	}
+	res, err := r.repo.Login(data)
+	if err != nil {
+		return &model.Users{}, err
+	}
+	return &model.Users{
+		Id:        res.Id,
+		Email:     res.Email,
+		CreatedAt: res.CreatedAt,
+	}, nil
+}
