@@ -23,7 +23,8 @@ func (r *UserService) Create(data *model.UserForm) (*model.Users, error) {
 	}
 	res := r.repo.Create(data)
 	return &model.Users{
-		Id:    res.Id,
-		Email: res.Email,
+		Id:        res.Id,
+		Email:     res.Email,
+		CreatedAt: res.CreatedAt,
 	}, nil
 }

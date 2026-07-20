@@ -27,26 +27,30 @@ func (h *UserHandler) Create(ctx *gin.Context) {
 	if errForm != nil {
 		ctx.JSON(http.StatusBadRequest, &lib.Response{
 			Success: false,
+			Status:  400,
 			Message: errForm.Error(),
 		})
 		return
 	}
 
-	res, error := h.svc.Create(&form)
-
-	if error != nil {
+	res, errorCreate := h.svc.Create(&form)
+	if errorCreate != nil {
 		ctx.JSON(http.StatusBadRequest, &lib.Response{
 			Success: false,
-			Message: error.Error(),
+			Status:  400,
+			Message: errorCreate.Error(),
 		})
-	} else {
-		ctx.JSON(http.StatusOK, &lib.Response{
-			Success: true,
-			Message: "Success Create Account",
-			Results: &model.Users{
-				Id:    res.Id,
-				Email: res.Email,
-			},
-		})
+		return
 	}
+
+	ctx.JSON(http.StatusOK, &lib.Response{
+		Success: true,
+		Status:  200,
+		Message: "Success Create Account",
+		Results: &model.Users{
+			Id:        res.Id,
+			Email:     res.Email,
+			CreatedAt: res.CreatedAt,
+		},
+	})
 }
