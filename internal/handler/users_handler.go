@@ -21,13 +21,19 @@ func NewUserHandler(svc *service.UserService) *UserHandler {
 }
 
 func (h *UserHandler) Create(ctx *gin.Context) {
-	email := ctx.PostForm("email")
-	password := ctx.PostForm("password")
+	var form model.UserForm
 
-	res, error := h.svc.Create(&model.UserForm{
-		Email:    email,
-		Password: password,
-	})
+	errForm := ctx.ShouldBind(&form)
+	if errForm != nil {
+		ctx.JSON(http.StatusBadRequest, &lib.Response{
+			Success: false,
+			Message: errForm.Error(),
+		})
+		return
+	}
+
+	res, error := h.svc.Create(&form)
+
 	if error != nil {
 		ctx.JSON(http.StatusBadRequest, &lib.Response{
 			Success: false,

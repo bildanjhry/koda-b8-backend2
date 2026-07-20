@@ -1,6 +1,6 @@
 package model
 
 type UserForm struct {
-	Email    string
-	Password string
+	Email    string `json:"email" form:"email" binding:"email,required"`
+	Password string `json:"password" form:"password" binding:"required"`
 }
