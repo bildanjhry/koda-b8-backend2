@@ -1,5 +1,11 @@
-POST /reg HTTP/1.1
+POST /register HTTP/1.1
 Host : localhost:8080
 Content-Type : application/x-www-form-urlencoded
 
-email=userbaru2@mail.com&password=12345
+email=userbaru11@mail.com&password=12345
+
+###
+
+POST /login HTTP/1.1
+Host: localhost:8080
+Content-Type: application/application/x-www-form-urlencoded
