@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/bildanjhry/auth/internal/lib"
 	"github.com/bildanjhry/auth/internal/model"
@@ -40,6 +41,26 @@ func (h *UserHandler) GetAll(ctx *gin.Context) {
 		Results: res,
 	})
 
+}
+
+func (h *UserHandler) Delete(ctx *gin.Context) {
+	idStr := ctx.Param("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	res := h.svc.Delete(&id)
+	if res != nil {
+		ctx.JSON(http.StatusInternalServerError, &lib.Response{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: res.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, &lib.Response{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "Success Delete Data",
+	})
 }
 
 func (h *UserHandler) Create(ctx *gin.Context) {

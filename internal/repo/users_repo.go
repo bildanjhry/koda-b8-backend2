@@ -83,6 +83,24 @@ func (u *UserRepo) GetAll() []*model.Users {
 	return users
 }
 
+func (u *UserRepo) Delete(id *int64) error {
+	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("Success connected")
+	}
+
+	defer pool.Close()
+
+	response, resErr := pool.Exec(context.Background(), `DELETE FROM "users" WHERE id=$1`, id)
+	if response.RowsAffected() != 1 {
+		return resErr
+	}
+	return nil
+}
+
 func (u *UserRepo) Create(data *model.UserForm) *model.Users {
 
 	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))

@@ -34,6 +34,11 @@ func (r *UserService) GetAll() ([]*model.Users, error) {
 	return res, nil
 }
 
+func (r *UserService) Delete(id *int64) error {
+	res := r.repo.Delete(id)
+	return res
+}
+
 func (r *UserService) Login(data *model.UserForm) (*model.Users, error) {
 	if len(data.Password) < 5 {
 		return &model.Users{}, errors.New("Minimum password length 5")

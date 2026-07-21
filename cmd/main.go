@@ -22,8 +22,10 @@ func main() {
 
 	users := r.Group("/user")
 	users.Use(middleware.Cors())
-	users.GET("/all", userHandler.GetAll)
 	users.OPTIONS("/all", func(ctx *gin.Context) {})
+	users.GET("/all", userHandler.GetAll)
+	users.OPTIONS("/delete/:id", func(ctx *gin.Context) {})
+	users.DELETE("/delete/:id", userHandler.Delete)
 
 	r.Run("0.0.0.0:8080")
 }
