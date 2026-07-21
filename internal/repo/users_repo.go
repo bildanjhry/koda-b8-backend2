@@ -12,10 +12,10 @@ import (
 )
 
 type UserRepo struct {
-	dataUser *[]model.Users
+	dataUser []*model.Users
 }
 
-func NewUserRepo(dataUser *[]model.Users) *UserRepo {
+func NewUserRepo(dataUser []*model.Users) *UserRepo {
 	return &UserRepo{
 		dataUser: dataUser,
 	}
@@ -56,6 +56,31 @@ func (u *UserRepo) Login(data *model.UserForm) (*model.Users, error) {
 	}
 
 	return &newUser, nil
+}
+
+func (u *UserRepo) GetAll() []*model.Users {
+
+	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("Success connected")
+	}
+
+	defer pool.Close()
+
+	response, errRes := pool.Query(context.Background(),
+		`SELECT "id", "email", "password", "created_at", "updated_at" 
+	FROM "users"`)
+	if errRes != nil {
+		fmt.Println(errRes.Error())
+	}
+	users, formErr := pgx.CollectRows(response, pgx.RowToAddrOfStructByName[model.Users])
+	if formErr != nil {
+		fmt.Println(formErr.Error())
+	}
+	return users
 }
 
 func (u *UserRepo) Create(data *model.UserForm) *model.Users {

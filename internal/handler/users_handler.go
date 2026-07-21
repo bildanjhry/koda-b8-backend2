@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/bildanjhry/auth/internal/lib"
@@ -18,6 +19,27 @@ func NewUserHandler(svc *service.UserService) *UserHandler {
 	return &UserHandler{
 		svc: svc,
 	}
+}
+
+func (h *UserHandler) GetAll(ctx *gin.Context) {
+	res, err := h.svc.GetAll()
+	fmt.Println(res)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, &lib.Response{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, &lib.Response{
+		Success: true,
+		Status:  200,
+		Message: "Success Create Account",
+		Results: res,
+	})
+
 }
 
 func (h *UserHandler) Create(ctx *gin.Context) {

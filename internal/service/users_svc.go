@@ -29,6 +29,11 @@ func (r *UserService) Create(data *model.UserForm) (*model.Users, error) {
 	}, nil
 }
 
+func (r *UserService) GetAll() ([]*model.Users, error) {
+	res := r.repo.GetAll()
+	return res, nil
+}
+
 func (r *UserService) Login(data *model.UserForm) (*model.Users, error) {
 	if len(data.Password) < 5 {
 		return &model.Users{}, errors.New("Minimum password length 5")
