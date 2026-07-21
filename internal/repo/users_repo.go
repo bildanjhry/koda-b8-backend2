@@ -101,6 +101,31 @@ func (u *UserRepo) Delete(id *int64) error {
 	return nil
 }
 
+func (u *UserRepo) Edit(id *int64, data *model.UserEmail) (*model.Users, error) {
+	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("Success connected")
+	}
+
+	defer pool.Close()
+
+	response, resErr := pool.Query(context.Background(),
+		`UPDATE "users" SET email=$1, updated_at=NOW() WHERE id=$2 
+		RETURNING "id", "email", "password", "created_at", "updated_at"`, data.Email, id)
+	if resErr != nil {
+		return &model.Users{}, resErr
+	}
+	users, formErr := pgx.CollectOneRow(response, pgx.RowToAddrOfStructByName[model.Users])
+	if formErr != nil {
+		return &model.Users{}, resErr
+	}
+	return users, nil
+
+}
+
 func (u *UserRepo) Create(data *model.UserForm) *model.Users {
 
 	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))

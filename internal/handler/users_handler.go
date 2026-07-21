@@ -63,6 +63,49 @@ func (h *UserHandler) Delete(ctx *gin.Context) {
 	})
 }
 
+func (h *UserHandler) Edit(ctx *gin.Context) {
+	var form model.UserEmail
+
+	errForm := ctx.ShouldBind(&form)
+	if errForm != nil {
+		ctx.JSON(http.StatusBadRequest, &lib.Response{
+			Success: false,
+			Status:  400,
+			Message: errForm.Error(),
+		})
+		return
+	}
+
+	fmt.Println(&form)
+
+	idStr := ctx.Param("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	res, editErr := h.svc.Edit(&id, &form)
+
+	if editErr != nil {
+		ctx.JSON(http.StatusInternalServerError, &lib.Response{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: editErr.Error(),
+		})
+		return
+	}
+
+	fmt.Println(res)
+
+	ctx.JSON(http.StatusOK, &lib.Response{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "Success Update Data",
+		Results: &model.Users{
+			Id:        res.Id,
+			Email:     res.Email,
+			CreatedAt: res.CreatedAt,
+			UpdatedAt: res.UpdatedAt,
+		},
+	})
+}
+
 func (h *UserHandler) Create(ctx *gin.Context) {
 	var form model.UserForm
 

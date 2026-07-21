@@ -39,6 +39,11 @@ func (r *UserService) Delete(id *int64) error {
 	return res
 }
 
+func (r *UserService) Edit(id *int64, data *model.UserEmail) (*model.Users, error) {
+	res, err := r.repo.Edit(id, data)
+	return res, err
+}
+
 func (r *UserService) Login(data *model.UserForm) (*model.Users, error) {
 	if len(data.Password) < 5 {
 		return &model.Users{}, errors.New("Minimum password length 5")
