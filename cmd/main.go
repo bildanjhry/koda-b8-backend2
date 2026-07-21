@@ -20,5 +20,10 @@ func main() {
 	auth.OPTIONS("/register", func(ctx *gin.Context) {})
 	auth.POST("/login", userHandler.Login)
 
+	users := r.Group("/user")
+	users.Use(middleware.Cors())
+	users.GET("/all", userHandler.GetAll)
+	users.OPTIONS("/all", func(ctx *gin.Context) {})
+
 	r.Run("0.0.0.0:8080")
 }
