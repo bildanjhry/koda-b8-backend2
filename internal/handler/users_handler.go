@@ -23,6 +23,15 @@ func NewUserHandler(svc *service.UserService) *UserHandler {
 	}
 }
 
+// ShowAllAccount godoc
+//
+//	@Summary		Show all users
+//	@Description	get all users
+//	@Tags			users
+//	@Security		BearerAuth
+//	@Success		200	{object}	lib.Response
+//	@Failure		500	{object}	lib.Response
+//	@Router			/user/all [get]
 func (h *UserHandler) GetAll(ctx *gin.Context) {
 	res, err := h.svc.GetAll()
 	fmt.Println(res)
@@ -44,6 +53,18 @@ func (h *UserHandler) GetAll(ctx *gin.Context) {
 
 }
 
+// ShowUserById godoc
+//
+//	@Summary		Show an user by id
+//	@Description	get user by id
+//	@Tags			users
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Security		BearerAuth
+//	@Param 		id path int true "user's Id"
+//	@Success		200	{object}	lib.Response
+//	@Failure		500	{object}	lib.Response
+//	@Router			/user/:id [get]
 func (h *UserHandler) GetById(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -70,6 +91,18 @@ func (h *UserHandler) GetById(ctx *gin.Context) {
 	})
 }
 
+// DeleteUserById godoc
+//
+//	@Summary		Delete user by id
+//	@Description	Delete user by id
+//	@Tags			users
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Security		BearerAuth
+//	@Param 		id path int true "user's Id"
+//	@Success		200	{object}	lib.Response
+//	@Failure		500	{object}	lib.Response
+//	@Router			/user/delete/:id [delete]
 func (h *UserHandler) Delete(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -90,6 +123,18 @@ func (h *UserHandler) Delete(ctx *gin.Context) {
 	})
 }
 
+// UploadProfilePicture godoc
+//
+//	@Summary		Upload profile picture
+//	@Description	Upload profile picture by id
+//	@Tags			users
+//	@Accept			json
+//	@Produce		json
+//	@Security		BearerAuth
+//	@Param 		id path int true "user's Id"
+//	@Success		200	{object}	lib.Response
+//	@Failure		500	{object}	lib.Response
+//	@Router			/user/upload-pic/:id [patch]
 func (h *UserHandler) UploadPicture(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -118,6 +163,18 @@ func (h *UserHandler) UploadPicture(ctx *gin.Context) {
 	})
 }
 
+// EditUserByiD godoc
+//
+//	@Summary		Edit User Email
+//	@Description	Edit User Email by id
+//	@Tags			users
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Security		BearerAuth
+//	@Param 		id path int true "user's Id"
+//	@Success		200	{object}	lib.Response
+//	@Failure		500	{object}	lib.Response
+//	@Router			/user/edit/:id [patch]
 func (h *UserHandler) Edit(ctx *gin.Context) {
 	var form model.UserEmail
 
@@ -161,6 +218,16 @@ func (h *UserHandler) Edit(ctx *gin.Context) {
 	})
 }
 
+// RegisterUser godoc
+//
+//	@Summary		Register User
+//	@Description	Register User
+//	@Tags			auth
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Success		200	{object}	lib.Response
+//	@Failure		500	{object}	lib.Response
+//	@Router			/auth/register [post]
 func (h *UserHandler) Create(ctx *gin.Context) {
 	var form model.UserForm
 
@@ -196,6 +263,18 @@ func (h *UserHandler) Create(ctx *gin.Context) {
 	})
 }
 
+// LoginUser godoc
+//
+//	@Summary		Login User
+//	@Description	Login User
+//	@Tags			auth
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Param 		email formData string true "Email"
+//	@Param 		password formData string true "Password"
+//	@Success		200	{object}	lib.Response
+//	@Failure		500	{object}	lib.Response
+//	@Router			/auth/login [post]
 func (h *UserHandler) Login(ctx *gin.Context) {
 	var form model.UserForm
 

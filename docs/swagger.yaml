@@ -1,7 +1,204 @@
+basePath: /
+definitions:
+  lib.Response:
+    properties:
+      message:
+        type: string
+      results: {}
+      status:
+        type: integer
+      success:
+        type: boolean
+    type: object
+externalDocs:
+  description: OpenAPI
+host: localhost:8080
 info:
-  contact: {}
-  description: This is a sample server celler server.
+  contact:
+    name: Swagger API Support
+    url: http://www.swagger.io/support
+  description: Simple backend for authentication user.
   title: Backend Auth
-  version: "1.0"
-paths: {}
+  version: 1.0.0
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Login User
+      parameters:
+      - description: Email
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/lib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/lib.Response'
+      summary: Login User
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Register User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/lib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/lib.Response'
+      summary: Register User
+      tags:
+      - auth
+  /user/:id:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: get user by id
+      parameters:
+      - description: user's Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/lib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/lib.Response'
+      security:
+      - BearerAuth: []
+      summary: Show an user by id
+      tags:
+      - users
+  /user/all:
+    get:
+      description: get all users
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/lib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/lib.Response'
+      security:
+      - BearerAuth: []
+      summary: Show all users
+      tags:
+      - users
+  /user/delete/:id:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Delete user by id
+      parameters:
+      - description: user's Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/lib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/lib.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete user by id
+      tags:
+      - users
+  /user/edit/:id:
+    patch:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Edit User Email by id
+      parameters:
+      - description: user's Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/lib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/lib.Response'
+      security:
+      - BearerAuth: []
+      summary: Edit User Email
+      tags:
+      - users
+  /user/upload-pic/:id:
+    patch:
+      consumes:
+      - application/json
+      description: Upload profile picture by id
+      parameters:
+      - description: user's Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/lib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/lib.Response'
+      security:
+      - BearerAuth: []
+      summary: Upload profile picture
+      tags:
+      - users
+securityDefinitions:
+  BearerAuth:
+    description: '*IMPORTANT Insert "Bearer" before token, exp: Bearer eyJh...'
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

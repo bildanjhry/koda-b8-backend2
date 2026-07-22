@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/bildanjhry/auth/docs"
 	"github.com/bildanjhry/auth/internal/di"
 	"github.com/bildanjhry/auth/internal/middleware"
 	"github.com/bildanjhry/go_shared-lib/utils"
@@ -10,8 +11,21 @@ import (
 )
 
 //	@title			Backend Auth
-//	@version		1.0
-//	@description	This is a sample server celler server.
+//	@version		1.0.0
+//	@description	Simple backend for authentication user.
+
+//	@host		localhost:8080
+//	@BasePath	/
+
+//	@contact.name	Swagger API Support
+//	@contact.url	http://www.swagger.io/support
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description *IMPORTANT Insert "Bearer" before token, exp: Bearer eyJh...
+
+//	@externalDocs.description	OpenAPI
 
 func main() {
 	r := gin.Default()
@@ -35,7 +49,7 @@ func main() {
 	users.OPTIONS("/delete/:id", func(ctx *gin.Context) {})
 	users.DELETE("/delete/:id", userHandler.Delete)
 	users.OPTIONS("/edit/:id", func(ctx *gin.Context) {})
-	users.PATCH("/edit/:id", userHandler.GetById)
+	users.PATCH("/edit/:id", userHandler.Edit)
 	users.OPTIONS("/detail/:id", func(ctx *gin.Context) {})
 	users.GET("/detail/:id", userHandler.GetById)
 	users.OPTIONS("/upload-pic/:id", func(ctx *gin.Context) {})
