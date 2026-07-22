@@ -58,6 +58,33 @@ func (u *UserRepo) Login(data *model.UserForm) (*model.Users, error) {
 	return &newUser, nil
 }
 
+func (u *UserRepo) GetById(id *int64) (*model.Users, error) {
+	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("Success connected")
+	}
+
+	defer pool.Close()
+
+	response, resErr := pool.Query(context.Background(),
+		`SELECT "id", "email", "password", "created_at", "updated_at" FROM "users" WHERE id=$1`,
+		id)
+	if resErr != nil {
+		fmt.Println(resErr.Error())
+		return nil, resErr
+	}
+
+	users, formatErr := pgx.CollectOneRow(response, pgx.RowToAddrOfStructByName[model.Users])
+	if formatErr != nil {
+		return nil, formatErr
+	}
+
+	return users, nil
+}
+
 func (u *UserRepo) GetAll() []*model.Users {
 
 	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
@@ -71,7 +98,7 @@ func (u *UserRepo) GetAll() []*model.Users {
 	defer pool.Close()
 
 	response, errRes := pool.Query(context.Background(),
-		`SELECT "id", "email", "password", "created_at", "updated_at" 
+		`SELECT "id", "email", "password", "picture", "created_at", "updated_at" 
 	FROM "users"`)
 	if errRes != nil {
 		fmt.Println(errRes.Error())
@@ -115,6 +142,31 @@ func (u *UserRepo) Edit(id *int64, data *model.UserEmail) (*model.Users, error) 
 	response, resErr := pool.Query(context.Background(),
 		`UPDATE "users" SET email=$1, updated_at=NOW() WHERE id=$2 
 		RETURNING "id", "email", "password", "created_at", "updated_at"`, data.Email, id)
+	if resErr != nil {
+		return &model.Users{}, resErr
+	}
+	users, formErr := pgx.CollectOneRow(response, pgx.RowToAddrOfStructByName[model.Users])
+	if formErr != nil {
+		return &model.Users{}, resErr
+	}
+	return users, nil
+
+}
+
+func (u *UserRepo) UploadPicture(id *int64, data *model.UserPicture) (*model.Users, error) {
+	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("Success connected")
+	}
+
+	defer pool.Close()
+
+	response, resErr := pool.Query(context.Background(),
+		`UPDATE "users" SET picture=$1, updated_at=NOW() WHERE id=$2 
+		RETURNING "id", "email", "picture", "password", "created_at", "updated_at"`, data.Picture, id)
 	if resErr != nil {
 		return &model.Users{}, resErr
 	}

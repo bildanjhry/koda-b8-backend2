@@ -34,6 +34,11 @@ func (r *UserService) GetAll() ([]*model.Users, error) {
 	return res, nil
 }
 
+func (r *UserService) GetById(id *int64) (*model.Users, error) {
+	res, err := r.repo.GetById(id)
+	return res, err
+}
+
 func (r *UserService) Delete(id *int64) error {
 	res := r.repo.Delete(id)
 	return res
@@ -41,6 +46,11 @@ func (r *UserService) Delete(id *int64) error {
 
 func (r *UserService) Edit(id *int64, data *model.UserEmail) (*model.Users, error) {
 	res, err := r.repo.Edit(id, data)
+	return res, err
+}
+
+func (r *UserService) UploadPicture(id *int64, data *model.UserPicture) (*model.Users, error) {
+	res, err := r.repo.UploadPicture(id, data)
 	return res, err
 }
 
