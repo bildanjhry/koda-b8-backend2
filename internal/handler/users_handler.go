@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
 	"strconv"
 
 	"github.com/bildanjhry/auth/internal/lib"
@@ -43,6 +44,31 @@ func (h *UserHandler) GetAll(ctx *gin.Context) {
 
 }
 
+func (h *UserHandler) GetById(ctx *gin.Context) {
+	idStr := ctx.Param("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+
+	res, err := h.svc.GetById(&id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, &lib.Response{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, &lib.Response{
+		Success: true,
+		Status:  200,
+		Message: "Success get data",
+		Results: &model.Users{
+			Id:        res.Id,
+			Email:     res.Email,
+			CreatedAt: res.CreatedAt,
+		},
+	})
+}
+
 func (h *UserHandler) Delete(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -60,6 +86,28 @@ func (h *UserHandler) Delete(ctx *gin.Context) {
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Success Delete Data",
+	})
+}
+
+func (h *UserHandler) UploadPicture(ctx *gin.Context) {
+	idStr := ctx.Param("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	file, err := ctx.FormFile("picture")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, &lib.Response{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	ext := filepath.Ext(file.Filename)
+	fileName := fmt.Sprintf("user-picture-%s%s", idStr, ext)
+	dst := filepath.Join("uploads", filepath.Base(fileName))
+	ctx.SaveUploadedFile(file, dst)
+	h.svc.UploadPicture(&id, &model.UserPicture{
+		Picture: dst,
 	})
 }
 
