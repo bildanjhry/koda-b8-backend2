@@ -65,6 +65,7 @@ func (h *UserHandler) GetById(ctx *gin.Context) {
 			Id:        res.Id,
 			Email:     res.Email,
 			CreatedAt: res.CreatedAt,
+			Picture:   res.Picture,
 		},
 	})
 }
@@ -108,6 +109,12 @@ func (h *UserHandler) UploadPicture(ctx *gin.Context) {
 	ctx.SaveUploadedFile(file, dst)
 	h.svc.UploadPicture(&id, &model.UserPicture{
 		Picture: dst,
+	})
+
+	ctx.JSON(http.StatusOK, &lib.Response{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "Success Update Profile",
 	})
 }
 
@@ -212,14 +219,16 @@ func (h *UserHandler) Login(ctx *gin.Context) {
 		return
 	}
 
+	token := lib.GenerateToken(res.Id)
+
 	ctx.JSON(http.StatusOK, &lib.Response{
 		Success: true,
 		Status:  200,
 		Message: "Login Success",
-		Results: &model.Users{
+		Results: &lib.LoginResponse{
 			Id:        res.Id,
-			Email:     res.Email,
 			CreatedAt: res.CreatedAt,
+			Token:     token,
 		},
 	})
 }

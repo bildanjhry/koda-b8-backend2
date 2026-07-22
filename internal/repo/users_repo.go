@@ -2,7 +2,6 @@ package repo
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 
@@ -34,7 +33,7 @@ func (u *UserRepo) Login(data *model.UserForm) (*model.Users, error) {
 	defer pool.Close()
 
 	response, resErr := pool.Query(context.Background(),
-		`SELECT "id", "email", "password", "created_at", "updated_at" FROM "users" 
+		`SELECT "id", "email", "password", "created_at", "updated_at", "picture" FROM "users" 
 		WHERE email=$1 AND password=$2`,
 		data.Email, data.Password)
 
@@ -45,7 +44,7 @@ func (u *UserRepo) Login(data *model.UserForm) (*model.Users, error) {
 	users, formErr := pgx.CollectOneRow(response, pgx.RowToAddrOfStructByName[model.Users])
 
 	if formErr != nil {
-		return &model.Users{}, errors.New("Email or password is wrong")
+		return nil, formErr
 	}
 
 	newUser := model.Users{
@@ -53,6 +52,7 @@ func (u *UserRepo) Login(data *model.UserForm) (*model.Users, error) {
 		Email:     users.Email,
 		Password:  users.Password,
 		CreatedAt: users.CreatedAt,
+		Picture:   users.Picture,
 	}
 
 	return &newUser, nil
@@ -70,7 +70,7 @@ func (u *UserRepo) GetById(id *int64) (*model.Users, error) {
 	defer pool.Close()
 
 	response, resErr := pool.Query(context.Background(),
-		`SELECT "id", "email", "password", "created_at", "updated_at" FROM "users" WHERE id=$1`,
+		`SELECT "id", "email", "password", "created_at", "updated_at", "picture" FROM "users" WHERE id=$1`,
 		id)
 	if resErr != nil {
 		fmt.Println(resErr.Error())
@@ -98,7 +98,7 @@ func (u *UserRepo) GetAll() []*model.Users {
 	defer pool.Close()
 
 	response, errRes := pool.Query(context.Background(),
-		`SELECT "id", "email", "password", "picture", "created_at", "updated_at" 
+		`SELECT "id", "email", "password", "created_at", "updated_at", "picture" 
 	FROM "users"`)
 	if errRes != nil {
 		fmt.Println(errRes.Error())

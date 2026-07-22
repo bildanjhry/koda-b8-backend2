@@ -3,7 +3,6 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/bildanjhry/auth/internal/lib"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,20 +17,6 @@ func Cors() gin.HandlerFunc {
 			ctx.AbortWithStatus(http.StatusOK)
 			return
 		}
-
-		// 		if ctx.Request.Method == "OPTIONS" {
-		// 			ctx.Status(http.StatusOK)
-		// 		}
-
-		if ctx.GetHeader("Authorization") != "hello" {
-			ctx.AbortWithStatusJSON(http.StatusUnauthorized, &lib.Response{
-				Success: false,
-				Status:  http.StatusUnauthorized,
-				Message: "Unauthorized",
-			})
-			return
-		}
-
 		ctx.Next()
 	}
 }
