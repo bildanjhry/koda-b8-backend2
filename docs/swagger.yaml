@@ -70,33 +70,6 @@ paths:
       summary: Register User
       tags:
       - auth
-  /user/:id:
-    get:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: get user by id
-      parameters:
-      - description: user's Id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/lib.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/lib.Response'
-      security:
-      - BearerAuth: []
-      summary: Show an user by id
-      tags:
-      - users
   /user/all:
     get:
       description: get all users
@@ -114,7 +87,7 @@ paths:
       summary: Show all users
       tags:
       - users
-  /user/delete/:id:
+  /user/delete/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -141,7 +114,34 @@ paths:
       summary: Delete user by id
       tags:
       - users
-  /user/edit/:id:
+  /user/detail/{id}:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: get user by id
+      parameters:
+      - description: user's Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/lib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/lib.Response'
+      security:
+      - BearerAuth: []
+      summary: Show an user by id
+      tags:
+      - users
+  /user/edit/{id}:
     patch:
       consumes:
       - application/x-www-form-urlencoded
@@ -168,7 +168,7 @@ paths:
       summary: Edit User Email
       tags:
       - users
-  /user/upload-pic/:id:
+  /user/upload-pic/{id}:
     patch:
       consumes:
       - application/json
@@ -179,6 +179,11 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Profile Picture
+        in: formData
+        name: picture
+        required: true
+        type: file
       produces:
       - application/json
       responses:

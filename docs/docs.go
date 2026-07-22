@@ -92,49 +92,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/:id": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "get user by id",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "Show an user by id",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "user's Id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/lib.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/lib.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/user/all": {
             "get": {
                 "security": [
@@ -163,7 +120,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/delete/:id": {
+        "/user/delete/{id}": {
             "delete": {
                 "security": [
                     {
@@ -206,7 +163,50 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/edit/:id": {
+        "/user/detail/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "get user by id",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Show an user by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "user's Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/lib.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/lib.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/edit/{id}": {
             "patch": {
                 "security": [
                     {
@@ -249,7 +249,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/upload-pic/:id": {
+        "/user/upload-pic/{id}": {
             "patch": {
                 "security": [
                     {
@@ -273,6 +273,13 @@ const docTemplate = `{
                         "description": "user's Id",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Profile Picture",
+                        "name": "picture",
+                        "in": "formData",
                         "required": true
                     }
                 ],

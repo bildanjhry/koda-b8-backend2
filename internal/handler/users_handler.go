@@ -64,7 +64,7 @@ func (h *UserHandler) GetAll(ctx *gin.Context) {
 //	@Param 		id path int true "user's Id"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
-//	@Router			/user/:id [get]
+//	@Router			/user/detail/{id} [get]
 func (h *UserHandler) GetById(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -102,7 +102,7 @@ func (h *UserHandler) GetById(ctx *gin.Context) {
 //	@Param 		id path int true "user's Id"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
-//	@Router			/user/delete/:id [delete]
+//	@Router			/user/delete/{id} [delete]
 func (h *UserHandler) Delete(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -132,9 +132,10 @@ func (h *UserHandler) Delete(ctx *gin.Context) {
 //	@Produce		json
 //	@Security		BearerAuth
 //	@Param 		id path int true "user's Id"
+//	@Param 		picture formData file true "Profile Picture"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
-//	@Router			/user/upload-pic/:id [patch]
+//	@Router			/user/upload-pic/{id} [patch]
 func (h *UserHandler) UploadPicture(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -174,7 +175,7 @@ func (h *UserHandler) UploadPicture(ctx *gin.Context) {
 //	@Param 		id path int true "user's Id"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
-//	@Router			/user/edit/:id [patch]
+//	@Router			/user/edit/{id} [patch]
 func (h *UserHandler) Edit(ctx *gin.Context) {
 	var form model.UserEmail
 
