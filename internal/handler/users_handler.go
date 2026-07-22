@@ -47,7 +47,7 @@ func (h *UserHandler) GetAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &lib.Response{
 		Success: true,
 		Status:  200,
-		Message: "Success Create Account",
+		Message: "Success Get All Users",
 		Results: res,
 	})
 
