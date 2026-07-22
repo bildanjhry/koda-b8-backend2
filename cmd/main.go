@@ -27,7 +27,11 @@ func main() {
 	users.OPTIONS("/delete/:id", func(ctx *gin.Context) {})
 	users.DELETE("/delete/:id", userHandler.Delete)
 	users.OPTIONS("/edit/:id", func(ctx *gin.Context) {})
-	users.PATCH("/edit/:id", userHandler.Edit)
+	users.PATCH("/edit/:id", userHandler.GetById)
+	users.OPTIONS("/detail/:id", func(ctx *gin.Context) {})
+	users.GET("/detail/:id", userHandler.GetById)
+	users.OPTIONS("/detail/:id", func(ctx *gin.Context) {})
+	users.GET("/detail/:id", userHandler.GetById)
 
 	r.Run("0.0.0.0:8080")
 }
