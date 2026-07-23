@@ -86,6 +86,8 @@ func (h *UserHandler) GetAll(ctx *gin.Context) {
 		Status:      200,
 		Message:     "Success Get All Users",
 		Page:        par.PAGE,
+		ORDER_BY:    par.ORDER_BY,
+		Order:       par.ORDER,
 		Data_length: par.LIMIT,
 		Results:     res,
 	})

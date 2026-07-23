@@ -12,6 +12,8 @@ type ResponseUsers struct {
 	Status      int
 	Message     string
 	Page        string
+	ORDER_BY    string
+	Order       string
 	Data_length string
 	Results     any
 }
