@@ -15,9 +15,8 @@ export default async function login(datas) {
 			alert(data.Message)
 		}
 		if (data.Success) {
-			console.log(data)
 			window.localStorage.setItem("token_user", data?.Results?.Token)
-			window.location.href = "/dashboard.html"
+			window.location.href = "/frontend/dashboard.html"
 		} 
 
 	} catch (err) {

@@ -7,7 +7,6 @@ export default async function register(datas) {
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 			body: datas.toString()
-
 		})
 
 		if (!response.ok) {

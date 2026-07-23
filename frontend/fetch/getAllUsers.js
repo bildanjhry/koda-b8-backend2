@@ -1,7 +1,7 @@
-export default async function getAllUsers() {
+export default async function getAllUsers(params) {
   try {
     const token = window.localStorage.getItem("token_user") || ''
-    const url = "http://localhost:8080/user/all"
+    const url = `http://localhost:8080/users/all?${params}`
     const response = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

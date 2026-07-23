@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: "Inter", sans-serif;
 }
 
 .container {
@@ -57,8 +58,9 @@ body {
     cursor: pointer;
     height: 3.5rem;
     font-size: 17px;
-    background-color: #555050;
+    background-color: black;
     color: white;
+    font-family: "Inter", sans-serif;
 }
 
 .register-wrapper{
@@ -184,15 +186,43 @@ table > thead {
     height: 3rem;
 }
 
-
 .head-row {
-    height: 2rem;
+    height: 3rem;
+    font-weight: 700;
 }
 
 .profile-pic {
     width: 7rem;
     height: 10rem;
     object-fit: cover;
+}
+
+.btn-group-wrapper {
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    justify-content: end;
+}
+
+.btn-page-active {
+    background-color: black !important;
+    color: white;
+}
+
+.btn-page {
+    cursor: pointer;
+    background-color: #eaeaea1b;
+    border: none;
+    border: 1px solid black;
+    padding: 7px 12px 7px 12px;
+    font-family: "Inter", sans-serif;
+}
+
+.btn-page-container {
+    list-style: none;
+    width: fit-content;
+    display: flex;
+    gap: 7px;
 }
 
 
@@ -246,9 +276,9 @@ table > thead {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    line-height: 20px;
     background-color: #f0f0f0;
 }
-
 
 .user-card > div  {
     display: flex;
@@ -267,6 +297,10 @@ table > thead {
 
 .user-card > div > label {
     cursor: pointer;
+}
+
+.user-email {
+    margin: 0;
 }
 
 .upload-input {

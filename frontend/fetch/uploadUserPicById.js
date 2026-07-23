@@ -1,7 +1,7 @@
 export default async function uploadUserPicById(id, datas) {
 	try {
 		const token = window.localStorage.getItem("token_user") || ''
-		const url = `http://localhost:8080/user/upload-pic/${id}`
+		const url = `http://localhost:8080/users/upload-pic/${id}`
 		const response = await fetch(url, {
 			method: "PATCH",
 			headers: {

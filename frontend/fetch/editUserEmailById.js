@@ -1,13 +1,12 @@
 export default async function editUserEmailById(id, datas) {
-
-	console.log(datas.toString())
 	try {
-		const url = `http://localhost:8080/user/edit/${id}`
+		const token = window.localStorage.getItem("token_user")
+		const url = `http://localhost:8080/users/edit/${id}`
 		const response = await fetch(url, {
 			method: "PATCH",
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
-				'Authorization': 'hello',
+				'Authorization': `Bearer ${token}`,
 			},
 			body: datas.toString()
 
@@ -17,7 +16,6 @@ export default async function editUserEmailById(id, datas) {
 			throw new Error(response.error)
 		}
 		const data = await response.json()
-		console.log(data)
 		return data
 
 	} catch (err) {

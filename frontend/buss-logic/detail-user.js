@@ -8,6 +8,7 @@ $(document).ready( async function() {
 	const response = await getUserById(id)	
 	const data = response.Results
 
+	$(".user-name").text(data.name)
 	$(".user-email").text(data.email)
 	$(".my-picture").attr("src", `http://localhost:8080/${data.picture}`)
 
