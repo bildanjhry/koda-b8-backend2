@@ -6,7 +6,7 @@
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
 ![JQuery](https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)
 
-Aplikasi Fullstack dengan Backend menggunakan Gin-Gonic sebagai frameworknya, HTML & CSS dan Jquery untuk Frontendnya serta untuk engine autentikasi aplikasi ini menggunakan JWT.
+Aplikasi Fullstack dengan Backend menggunakan Gin-Gonic sebagai frameworknya, HTML & CSS dan Jquery untuk Frontend-nya serta Jason Web Token(JWT) untuk engine autentikasi-nya.
 
 ### Tech Stack:
 - Go v1.25.4
@@ -25,14 +25,16 @@ Aplikasi Fullstack dengan Backend menggunakan Gin-Gonic sebagai frameworknya, HT
 erDiagram
     USERS {
         int64 id PK
+        string name
         string email
         string password
+        string picture
         date created_at
         date updated_at
     }
 
 ```
 
-Sedangkan untuk dokumentasi API, aplikasi ini menggunakan swaggo (swagger-go)
+Untuk dokumentasi API, aplikasi ini menggunakan swaggo (swagger-go) dan berikut merupakan endpoint-endpoint dari program ini
 ### Preview:
-![alt text](image.png)
+![alt text](swagger.png)
