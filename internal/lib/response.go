@@ -1,7 +1,5 @@
 package lib
 
-import "time"
-
 type Response struct {
 	Success bool
 	Status  int
@@ -9,9 +7,16 @@ type Response struct {
 	Results any
 }
 
+type ResponseUsers struct {
+	Success     bool
+	Status      int
+	Message     string
+	Page        string
+	Data_length string
+	Results     any
+}
+
 type LoginResponse struct {
-	Id        int64
-	CreatedAt time.Time
-	UpdatedAt *time.Time
-	Token     string
+	Id    int64
+	Token string
 }

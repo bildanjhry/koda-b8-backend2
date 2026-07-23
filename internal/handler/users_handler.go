@@ -29,11 +29,40 @@ func NewUserHandler(svc *service.UserService) *UserHandler {
 //	@Description	get all users
 //	@Tags			users
 //	@Security		BearerAuth
+//	@Param 		page query string false "page"
+//	@Param 		limit query string false "limit"
+//	@Param 		search[name] query string false "search users by name" search(name)
+//	@Param 		search[email] query string false "search users by email" search(email)
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
 //	@Router			/user/all [get]
 func (h *UserHandler) GetAll(ctx *gin.Context) {
-	res, err := h.svc.GetAll()
+	par := model.UserParams{
+		PAGE:     "1",
+		LIMIT:    "5",
+		ORDER:    "ASC",
+		NAME:     "",
+		EMAIL:    "",
+		ORDER_BY: "id",
+	}
+	search := ctx.QueryMap("search")
+	name := search["name"]
+	email := search["email"]
+
+	if name != "" {
+		par.NAME = name
+	}
+	if email != "" {
+		par.EMAIL = email
+	}
+	if ctx.Query("page") != "" {
+		par.PAGE = ctx.Query("page")
+	}
+	if ctx.Query("limit") != "" {
+		par.LIMIT = ctx.Query("limit")
+	}
+
+	res, err := h.svc.GetAll(&par)
 	fmt.Println(res)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, &lib.Response{
@@ -44,11 +73,13 @@ func (h *UserHandler) GetAll(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, &lib.Response{
-		Success: true,
-		Status:  200,
-		Message: "Success Get All Users",
-		Results: res,
+	ctx.JSON(http.StatusOK, &lib.ResponseUsers{
+		Success:     true,
+		Status:      200,
+		Message:     "Success Get All Users",
+		Page:        par.PAGE,
+		Data_length: par.LIMIT,
+		Results:     res,
 	})
 
 }
@@ -305,9 +336,8 @@ func (h *UserHandler) Login(ctx *gin.Context) {
 		Status:  200,
 		Message: "Login Success",
 		Results: &lib.LoginResponse{
-			Id:        res.Id,
-			CreatedAt: res.CreatedAt,
-			Token:     token,
+			Id:    res.Id,
+			Token: token,
 		},
 	})
 }
@@ -320,24 +350,28 @@ func (h *UserHandler) Login(ctx *gin.Context) {
 //	@Accept			x-www-form-urlencoded
 //	@Produce		json
 //	@Security		BearerAuth
-//	@Param 		search formData string true "Search"
+//	@Param 		search query string false "search users by name"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
 //	@Router			/user/search [post]
 func (h *UserHandler) GetByAttrs(ctx *gin.Context) {
-	var form model.Search
+	//var form model.Search
 
-	errForm := ctx.ShouldBind(&form)
-	if errForm != nil {
-		ctx.JSON(http.StatusBadRequest, &lib.Response{
-			Success: false,
-			Status:  http.StatusBadRequest,
-			Message: errForm.Error(),
-		})
-		return
-	}
+	//errForm := ctx.ShouldBind(&form)
+	input := ctx.QueryMap("search")
+	fmt.Println(input)
+	test := ctx.Query("search")
+	fmt.Println(test)
+	// if errForm != nil {
+	// 	ctx.JSON(http.StatusBadRequest, &lib.Response{
+	// 		Success: false,
+	// 		Status:  http.StatusBadRequest,
+	// 		Message: errForm.Error(),
+	// 	})
+	// 	return
+	// }
 
-	res, err := h.svc.GetByAttrs(&form)
+	res, err := h.svc.GetByAttrs(&test)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, &lib.Response{
 			Success: false,

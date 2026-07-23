@@ -25,8 +25,8 @@ func (r *UserService) Create(data *model.UserForm) (*model.Users, error) {
 	return res, nil
 }
 
-func (r *UserService) GetAll() ([]*model.Users, error) {
-	res := r.repo.GetAll()
+func (r *UserService) GetAll(par *model.UserParams) ([]*model.Users, error) {
+	res := r.repo.GetAll(par)
 	return res, nil
 }
 
@@ -50,7 +50,7 @@ func (r *UserService) UploadPicture(id *int64, data *model.UserPicture) (*model.
 	return res, err
 }
 
-func (r *UserService) GetByAttrs(data *model.Search) ([]*model.Users, error) {
+func (r *UserService) GetByAttrs(data *string) ([]*model.Users, error) {
 	res, err := r.repo.GetByAttrs(data)
 	return res, err
 }

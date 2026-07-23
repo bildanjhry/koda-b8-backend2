@@ -2,8 +2,10 @@ package repo
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/bildanjhry/auth/internal/model"
 	"github.com/jackc/pgx/v5"
@@ -86,7 +88,7 @@ func (u *UserRepo) GetById(id *int64) (*model.Users, error) {
 	return users, nil
 }
 
-func (u *UserRepo) GetAll() []*model.Users {
+func (u *UserRepo) GetAll(par *model.UserParams) []*model.Users {
 
 	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 
@@ -98,9 +100,29 @@ func (u *UserRepo) GetAll() []*model.Users {
 
 	defer pool.Close()
 
-	response, errRes := pool.Query(context.Background(),
-		`SELECT "id", "name", "email", "password", "created_at", "updated_at", "picture" 
-	FROM "users"`)
+	intPage, _ := strconv.ParseInt(par.PAGE, 10, 32)
+	intLimit, _ := strconv.ParseInt(par.LIMIT, 10, 32)
+	var page int64 = 0
+	if intPage > 1 {
+		page = page + (intPage * intLimit)
+	}
+
+	qEmail := fmt.Sprintf("%s", par.EMAIL)
+	qEmail = qEmail + string("%")
+	qName := fmt.Sprintf("%s", par.NAME)
+	qName = qName + string("%")
+	querySearch := ""
+
+	query := fmt.Sprintf(`SELECT "id", "name", "email", "password", "created_at", "updated_at", "picture" 
+	FROM "users" ORDER BY %s LIMIT %s OFFSET %d`, par.ORDER_BY, par.LIMIT, page)
+
+	if par.EMAIL != "" || par.NAME != "" {
+		querySearch = fmt.Sprintf(` WHERE name LIKE %s`, qName)
+	}
+	fmt.Println(query + querySearch)
+	fmt.Println(par.ORDER_BY)
+
+	response, errRes := pool.Query(context.Background(), query)
 	if errRes != nil {
 		fmt.Println(errRes.Error())
 	}
@@ -207,7 +229,7 @@ func (u *UserRepo) Create(data *model.UserForm) *model.Users {
 	return users
 }
 
-func (u *UserRepo) GetByAttrs(data *model.Search) ([]*model.Users, error) {
+func (u *UserRepo) GetByAttrs(data *string) ([]*model.Users, error) {
 
 	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
@@ -215,9 +237,7 @@ func (u *UserRepo) GetByAttrs(data *model.Search) ([]*model.Users, error) {
 	}
 	defer pool.Close()
 
-	fmt.Println(data.Input)
-
-	input := fmt.Sprintf("%s", data.Input)
+	input := fmt.Sprintf("%s", *data)
 	input = input + string("%")
 
 	response, resErr := pool.Query(context.Background(),
@@ -232,6 +252,8 @@ func (u *UserRepo) GetByAttrs(data *model.Search) ([]*model.Users, error) {
 	if formErr != nil {
 		fmt.Println(formErr.Error())
 		return nil, formErr
+	} else if len(users) < 1 {
+		return nil, errors.New("User not found")
 	}
 
 	return users, nil
