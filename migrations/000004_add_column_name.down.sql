@@ -1,0 +1,1 @@
+ALTER TABLE "users" DELETE COLUMN "name";

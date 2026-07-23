@@ -84,6 +84,7 @@ func (h *UserHandler) GetById(ctx *gin.Context) {
 		Message: "Success get data",
 		Results: &model.Users{
 			Id:        res.Id,
+			Name:      res.Name,
 			Email:     res.Email,
 			CreatedAt: res.CreatedAt,
 			Picture:   res.Picture,
@@ -189,8 +190,6 @@ func (h *UserHandler) Edit(ctx *gin.Context) {
 		return
 	}
 
-	fmt.Println(&form)
-
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	res, editErr := h.svc.Edit(&id, &form)
@@ -212,6 +211,7 @@ func (h *UserHandler) Edit(ctx *gin.Context) {
 		Message: "Success Update Data",
 		Results: &model.Users{
 			Id:        res.Id,
+			Name:      res.Name,
 			Email:     res.Email,
 			CreatedAt: res.CreatedAt,
 			UpdatedAt: res.UpdatedAt,
@@ -226,6 +226,9 @@ func (h *UserHandler) Edit(ctx *gin.Context) {
 //	@Tags			auth
 //	@Accept			x-www-form-urlencoded
 //	@Produce		json
+//	@Param 		name formData string true "Name"
+//	@Param 		email formData string true "Email"
+//	@Param 		password formData string true "Password"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
 //	@Router			/auth/register [post]
@@ -256,11 +259,7 @@ func (h *UserHandler) Create(ctx *gin.Context) {
 		Success: true,
 		Status:  200,
 		Message: "Success Create Account",
-		Results: &model.Users{
-			Id:        res.Id,
-			Email:     res.Email,
-			CreatedAt: res.CreatedAt,
-		},
+		Results: res,
 	})
 }
 
@@ -277,7 +276,7 @@ func (h *UserHandler) Create(ctx *gin.Context) {
 //	@Failure		500	{object}	lib.Response
 //	@Router			/auth/login [post]
 func (h *UserHandler) Login(ctx *gin.Context) {
-	var form model.UserForm
+	var form model.LoginForm
 
 	errForm := ctx.ShouldBind(&form)
 	if errForm != nil {

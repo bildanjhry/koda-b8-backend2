@@ -20,7 +20,7 @@ func NewUserRepo(dataUser []*model.Users) *UserRepo {
 	}
 }
 
-func (u *UserRepo) Login(data *model.UserForm) (*model.Users, error) {
+func (u *UserRepo) Login(data *model.LoginForm) (*model.Users, error) {
 
 	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 
@@ -33,7 +33,7 @@ func (u *UserRepo) Login(data *model.UserForm) (*model.Users, error) {
 	defer pool.Close()
 
 	response, resErr := pool.Query(context.Background(),
-		`SELECT "id", "email", "password", "created_at", "updated_at", "picture" FROM "users" 
+		`SELECT "id", "name", "email", "password", "created_at", "updated_at", "picture" FROM "users" 
 		WHERE email=$1 AND password=$2`,
 		data.Email, data.Password)
 
@@ -49,6 +49,7 @@ func (u *UserRepo) Login(data *model.UserForm) (*model.Users, error) {
 
 	newUser := model.Users{
 		Id:        users.Id,
+		Name:      users.Name,
 		Email:     users.Email,
 		Password:  users.Password,
 		CreatedAt: users.CreatedAt,
@@ -70,7 +71,7 @@ func (u *UserRepo) GetById(id *int64) (*model.Users, error) {
 	defer pool.Close()
 
 	response, resErr := pool.Query(context.Background(),
-		`SELECT "id", "email", "password", "created_at", "updated_at", "picture" FROM "users" WHERE id=$1`,
+		`SELECT "id", "name", "email", "password", "created_at", "updated_at", "picture" FROM "users" WHERE id=$1`,
 		id)
 	if resErr != nil {
 		fmt.Println(resErr.Error())
@@ -98,7 +99,7 @@ func (u *UserRepo) GetAll() []*model.Users {
 	defer pool.Close()
 
 	response, errRes := pool.Query(context.Background(),
-		`SELECT "id", "email", "password", "created_at", "updated_at", "picture" 
+		`SELECT "id", "name", "email", "password", "created_at", "updated_at", "picture" 
 	FROM "users"`)
 	if errRes != nil {
 		fmt.Println(errRes.Error())
@@ -191,9 +192,9 @@ func (u *UserRepo) Create(data *model.UserForm) *model.Users {
 	defer pool.Close()
 
 	response, err := pool.Query(context.Background(),
-		`INSERT INTO "users" ("email", "password") 
-		VALUES ($1, $2) RETURNING "id", "email", "password", "created_at", "updated_at"`,
-		data.Email, data.Password)
+		`INSERT INTO "users" ("name", "email", "password") 
+		VALUES ($1, $2, $3) RETURNING "id", "name", "email", "password", "created_at", "updated_at"`,
+		data.Name, data.Email, data.Password)
 
 	users, formErr := pgx.CollectOneRow(response, pgx.RowToAddrOfStructByName[model.Users])
 
@@ -201,12 +202,7 @@ func (u *UserRepo) Create(data *model.UserForm) *model.Users {
 		return &model.Users{}
 	}
 
-	newUser := model.Users{
-		Id:        users.Id,
-		Email:     users.Email,
-		Password:  users.Password,
-		CreatedAt: users.CreatedAt,
-	}
+	fmt.Println(users)
 
-	return &newUser
+	return users
 }

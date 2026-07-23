@@ -24,6 +24,7 @@ func (r *UserService) Create(data *model.UserForm) (*model.Users, error) {
 	res := r.repo.Create(data)
 	return &model.Users{
 		Id:        res.Id,
+		Name:      res.Name,
 		Email:     res.Email,
 		CreatedAt: res.CreatedAt,
 	}, nil
@@ -54,7 +55,7 @@ func (r *UserService) UploadPicture(id *int64, data *model.UserPicture) (*model.
 	return res, err
 }
 
-func (r *UserService) Login(data *model.UserForm) (*model.Users, error) {
+func (r *UserService) Login(data *model.LoginForm) (*model.Users, error) {
 	if len(data.Password) < 5 {
 		return &model.Users{}, errors.New("Minimum password length 5")
 	}
