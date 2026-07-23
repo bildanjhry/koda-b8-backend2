@@ -127,6 +127,32 @@ const docTemplate = `{
                     "users"
                 ],
                 "summary": "Show all users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search users by name",
+                        "name": "search[name]",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search users by email",
+                        "name": "search[email]",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -293,10 +319,9 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Search",
+                        "description": "search users by name",
                         "name": "search",
-                        "in": "formData",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
