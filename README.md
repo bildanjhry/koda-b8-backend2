@@ -4,6 +4,7 @@
 ![Gin](https://img.shields.io/badge/Gin_gonic-008ECF?style=for-the-badge&logo=gin&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+![JQuery](https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)
 
 Aplikasi Fullstack dengan Backend menggunakan Gin-Gonic sebagai frameworknya, HTML & CSS dan Jquery untuk Frontendnya serta untuk engine autentikasi aplikasi ini menggunakan JWT.
 
