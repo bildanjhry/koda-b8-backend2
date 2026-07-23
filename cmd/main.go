@@ -41,7 +41,7 @@ func main() {
 	auth.OPTIONS("/register", func(ctx *gin.Context) {})
 	auth.POST("/login", userHandler.Login)
 
-	users := r.Group("/user")
+	users := r.Group("/users")
 	users.Use(middleware.Cors())
 	users.Use(middleware.Auth())
 	users.OPTIONS("/all", func(ctx *gin.Context) {})
@@ -54,8 +54,6 @@ func main() {
 	users.GET("/detail/:id", userHandler.GetById)
 	users.OPTIONS("/upload-pic/:id", func(ctx *gin.Context) {})
 	users.PATCH("/upload-pic/:id", userHandler.UploadPicture)
-	users.OPTIONS("/search", func(ctx *gin.Context) {})
-	users.POST("/search", userHandler.GetByAttrs)
 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run("0.0.0.0:8080")

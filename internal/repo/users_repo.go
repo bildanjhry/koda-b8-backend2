@@ -2,7 +2,6 @@ package repo
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -125,8 +124,6 @@ func (u *UserRepo) GetAll(par *model.UserParams) []*model.Users {
 
 	pagination := fmt.Sprintf(` ORDER BY %s %s LIMIT %s OFFSET %d`, par.ORDER_BY, par.ORDER, par.LIMIT, page)
 
-	fmt.Println(query + querySearch + pagination)
-
 	response, errRes := pool.Query(context.Background(), query+querySearch+pagination)
 	if errRes != nil {
 		fmt.Println(errRes.Error())
@@ -232,34 +229,4 @@ func (u *UserRepo) Create(data *model.UserForm) *model.Users {
 	fmt.Println(users)
 
 	return users
-}
-
-func (u *UserRepo) GetByAttrs(data *string) ([]*model.Users, error) {
-
-	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	defer pool.Close()
-
-	input := fmt.Sprintf("%s", *data)
-	input = input + string("%")
-
-	response, resErr := pool.Query(context.Background(),
-		`SELECT * FROM "users" WHERE name LIKE $1 OR email LIKE $1 `,
-		input)
-	if resErr != nil {
-		fmt.Println(resErr.Error())
-		return nil, resErr
-	}
-
-	users, formErr := pgx.CollectRows(response, pgx.RowToAddrOfStructByName[model.Users])
-	if formErr != nil {
-		fmt.Println(formErr.Error())
-		return nil, formErr
-	} else if len(users) < 1 {
-		return nil, errors.New("User not found")
-	}
-
-	return users, nil
 }
