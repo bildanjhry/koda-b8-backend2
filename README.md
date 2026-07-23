@@ -17,7 +17,7 @@ Aplikasi Fullstack dengan Backend menggunakan Gin-Gonic sebagai frameworknya, HT
 - Order options ASC/DESC
 ![alt text](image.png)
 
-### Result in Json:
+### Response in Json:
 ```json
 {
   "Success": true,
