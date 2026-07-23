@@ -1,4 +1,4 @@
-# Program Autentikasi
+# Rest Api With Go
 
 ![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)
 ![Gin](https://img.shields.io/badge/Gin_gonic-008ECF?style=for-the-badge&logo=gin&logoColor=white)
@@ -15,6 +15,7 @@ Aplikasi Fullstack dengan Backend menggunakan Gin-Gonic sebagai frameworknya, HT
 - Seacrh by email
 - Sorting options [id, name, email, created_at, updated_at]
 - Order options ASC/DESC
+
 ![alt text](image.png)
 
 ### Response in Json:
