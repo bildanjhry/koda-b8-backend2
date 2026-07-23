@@ -151,6 +151,31 @@ const docTemplate = `{
                         "description": "search users by email",
                         "name": "search[email]",
                         "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "id",
+                            "name",
+                            "email",
+                            "created_at",
+                            "updated_at"
+                        ],
+                        "type": "string",
+                        "default": "id",
+                        "description": "Sort by",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "ASC",
+                            "DESC"
+                        ],
+                        "type": "string",
+                        "default": "ASC",
+                        "description": "Order",
+                        "name": "order",
+                        "in": "query"
                     }
                 ],
                 "responses": {

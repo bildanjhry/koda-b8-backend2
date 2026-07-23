@@ -106,6 +106,25 @@ paths:
         in: query
         name: search[email]
         type: string
+      - default: id
+        description: Sort by
+        enum:
+        - id
+        - name
+        - email
+        - created_at
+        - updated_at
+        in: query
+        name: sort
+        type: string
+      - default: ASC
+        description: Order
+        enum:
+        - ASC
+        - DESC
+        in: query
+        name: order
+        type: string
       responses:
         "200":
           description: OK

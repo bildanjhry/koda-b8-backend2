@@ -123,7 +123,9 @@ func (u *UserRepo) GetAll(par *model.UserParams) []*model.Users {
 		querySearch = fmt.Sprintf(`WHERE email ILIKE '%s'`, qEmail)
 	}
 
-	pagination := fmt.Sprintf(` ORDER BY %s LIMIT %s OFFSET %d`, par.ORDER_BY, par.LIMIT, page)
+	pagination := fmt.Sprintf(` ORDER BY %s %s LIMIT %s OFFSET %d`, par.ORDER_BY, par.ORDER, par.LIMIT, page)
+
+	fmt.Println(query + querySearch + pagination)
 
 	response, errRes := pool.Query(context.Background(), query+querySearch+pagination)
 	if errRes != nil {

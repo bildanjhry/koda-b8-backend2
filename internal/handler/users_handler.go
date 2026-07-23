@@ -33,6 +33,8 @@ func NewUserHandler(svc *service.UserService) *UserHandler {
 //	@Param 		limit query string false "limit"
 //	@Param 		search[name] query string false "search users by name" search(name)
 //	@Param 		search[email] query string false "search users by email" search(email)
+//	@Param 		sort query string false "Sort by" Enums(id, name, email, created_at, updated_at) default(id)
+//	@Param 		order query string false "Order" Enums(ASC, DESC) default(ASC)
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
 //	@Router			/user/all [get]
@@ -60,6 +62,12 @@ func (h *UserHandler) GetAll(ctx *gin.Context) {
 	}
 	if ctx.Query("limit") != "" {
 		par.LIMIT = ctx.Query("limit")
+	}
+	if ctx.Query("sort") != "" {
+		par.ORDER_BY = ctx.Query("sort")
+	}
+	if ctx.Query("order") != "" {
+		par.ORDER = ctx.Query("order")
 	}
 
 	res, err := h.svc.GetAll(&par)
