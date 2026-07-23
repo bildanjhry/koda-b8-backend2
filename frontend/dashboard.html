@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<script src="https://code.jquery.com/jquery-4.0.0.slim.js"
+		integrity="sha256-M+GjhMBfXikM1izMplICCTscIj5hzPCp6uDzaypxtgg=" crossorigin="anonymous"></script>
+	<title>Document</title>
+</head>
+
+<body style="position: relative;">
+	<div class="edit-form-wrapper">
+		<form action="" class="form-edit">
+			<button class="btn-exit" type="button">
+				X
+			</button>
+			<div>
+				<label for="email">Insert new Email</label>
+				<input type="email" id="email" name="email">
+			</div>
+			<button type="submit">
+				Submit
+			</button>
+		</form>
+
+	</div>
+	<div class="dashboard-container">
+		<div class="dashboard-wrapper">
+			<button class="btn-logout" type="button">Logout</button>
+			<table>
+				<thead>
+					<tr class="head-row">
+						<td style="padding-left: 15px;">NO</td>
+						<td>Picture</td>
+						<td>Email</td>
+						<td>Action</td>
+					</tr>
+				</thead>
+				<tbody class="table-user">
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<script type="module" src="./buss-logic/dashboard.js"></script>
+</body>
+</html>

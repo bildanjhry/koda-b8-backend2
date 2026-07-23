@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+		<script src="https://code.jquery.com/jquery-4.0.0.slim.js"
+		integrity="sha256-M+GjhMBfXikM1izMplICCTscIj5hzPCp6uDzaypxtgg=" crossorigin="anonymous"></script>
+	<title>Auth</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="wrapper">
+			<h1>Login</h1>
+			<div class="alert-display">
+
+			</div>
+			<form class="form-login">
+				<div class="input-wrapper">
+					<label for="email" class="email-label">
+						Email
+					</label>
+					<input type="email" name="email" value="" id="email" class="input-block">
+				</div>
+				<div class="input-wrapper">
+					<label for="password" class="password-label">
+						Password
+					</label>
+					<input type="password" name="password" value="" id="password" class="input-block">
+				</div>
+				<div>
+					<button type="submit" class="btn-submit">
+						Login
+					</button>
+				</div>
+				<div class="register-wrapper">
+					<p>Do not have account yet?</p>
+					<a href="/register.html">Register</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script type="module" src="./buss-logic/login-action.js"></script>
+</body>
+
+</html>
