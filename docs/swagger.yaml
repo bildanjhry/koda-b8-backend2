@@ -86,7 +86,7 @@ paths:
       summary: Register User
       tags:
       - auth
-  /user/all:
+  /users/all:
     get:
       description: get all users
       parameters:
@@ -139,7 +139,7 @@ paths:
       summary: Show all users
       tags:
       - users
-  /user/delete/{id}:
+  /users/delete/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -166,7 +166,7 @@ paths:
       summary: Delete user by id
       tags:
       - users
-  /user/detail/{id}:
+  /users/detail/{id}:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -193,7 +193,7 @@ paths:
       summary: Show an user by id
       tags:
       - users
-  /user/edit/{id}:
+  /users/edit/{id}:
     patch:
       consumes:
       - application/x-www-form-urlencoded
@@ -220,33 +220,7 @@ paths:
       summary: Edit User Email
       tags:
       - users
-  /user/search:
-    post:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: Search User
-      parameters:
-      - description: search users by name
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/lib.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/lib.Response'
-      security:
-      - BearerAuth: []
-      summary: Search User
-      tags:
-      - users
-  /user/upload-pic/{id}:
+  /users/upload-pic/{id}:
     patch:
       consumes:
       - application/json

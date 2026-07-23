@@ -37,7 +37,7 @@ func NewUserHandler(svc *service.UserService) *UserHandler {
 //	@Param 		order query string false "Order" Enums(ASC, DESC) default(ASC)
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
-//	@Router			/user/all [get]
+//	@Router			/users/all [get]
 func (h *UserHandler) GetAll(ctx *gin.Context) {
 	par := model.UserParams{
 		PAGE:     "1",
@@ -103,7 +103,7 @@ func (h *UserHandler) GetAll(ctx *gin.Context) {
 //	@Param 		id path int true "user's Id"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
-//	@Router			/user/detail/{id} [get]
+//	@Router			/users/detail/{id} [get]
 func (h *UserHandler) GetById(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -142,7 +142,7 @@ func (h *UserHandler) GetById(ctx *gin.Context) {
 //	@Param 		id path int true "user's Id"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
-//	@Router			/user/delete/{id} [delete]
+//	@Router			/users/delete/{id} [delete]
 func (h *UserHandler) Delete(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -175,7 +175,7 @@ func (h *UserHandler) Delete(ctx *gin.Context) {
 //	@Param 		picture formData file true "Profile Picture"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
-//	@Router			/user/upload-pic/{id} [patch]
+//	@Router			/users/upload-pic/{id} [patch]
 func (h *UserHandler) UploadPicture(ctx *gin.Context) {
 	idStr := ctx.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
@@ -215,7 +215,7 @@ func (h *UserHandler) UploadPicture(ctx *gin.Context) {
 //	@Param 		id path int true "user's Id"
 //	@Success		200	{object}	lib.Response
 //	@Failure		500	{object}	lib.Response
-//	@Router			/user/edit/{id} [patch]
+//	@Router			/users/edit/{id} [patch]
 func (h *UserHandler) Edit(ctx *gin.Context) {
 	var form model.UserEmail
 

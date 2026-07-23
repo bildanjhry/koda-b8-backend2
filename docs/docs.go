@@ -115,7 +115,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/all": {
+        "/users/all": {
             "get": {
                 "security": [
                     {
@@ -194,7 +194,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/delete/{id}": {
+        "/users/delete/{id}": {
             "delete": {
                 "security": [
                     {
@@ -237,7 +237,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/detail/{id}": {
+        "/users/detail/{id}": {
             "get": {
                 "security": [
                     {
@@ -280,7 +280,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/edit/{id}": {
+        "/users/edit/{id}": {
             "patch": {
                 "security": [
                     {
@@ -323,49 +323,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/search": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Search User",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "Search User",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "search users by name",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/lib.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/lib.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/upload-pic/{id}": {
+        "/users/upload-pic/{id}": {
             "patch": {
                 "security": [
                     {
