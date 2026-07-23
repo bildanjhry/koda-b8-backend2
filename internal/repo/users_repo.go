@@ -102,27 +102,30 @@ func (u *UserRepo) GetAll(par *model.UserParams) []*model.Users {
 
 	intPage, _ := strconv.ParseInt(par.PAGE, 10, 32)
 	intLimit, _ := strconv.ParseInt(par.LIMIT, 10, 32)
-	var page int64 = 0
-	if intPage > 1 {
-		page = page + (intPage * intLimit)
-	}
+	var page int64 = 1
+	page = (intPage * intLimit) - intLimit
 
-	qEmail := fmt.Sprintf("%s", par.EMAIL)
-	qEmail = qEmail + string("%")
-	qName := fmt.Sprintf("%s", par.NAME)
-	qName = qName + string("%")
+	qEmail := "%" + par.EMAIL + "%"
+	qName := "%" + par.NAME + "%"
 	querySearch := ""
 
-	query := fmt.Sprintf(`SELECT "id", "name", "email", "password", "created_at", "updated_at", "picture" 
-	FROM "users" ORDER BY %s LIMIT %s OFFSET %d`, par.ORDER_BY, par.LIMIT, page)
+	query := `SELECT "id", "name", "email", "password", "created_at", "updated_at", "picture" 
+	FROM "users" `
 
-	if par.EMAIL != "" || par.NAME != "" {
-		querySearch = fmt.Sprintf(` WHERE name LIKE %s`, qName)
+	if par.NAME != "" && par.EMAIL != "" {
+		page -= (page)
+		querySearch = fmt.Sprintf(`WHERE name ILIKE '%s' OR email ILIKE '%s'`, qName, qEmail)
+	} else if par.NAME != "" {
+		page -= (page)
+		querySearch = fmt.Sprintf(`WHERE name ILIKE '%s'`, qName)
+	} else if par.EMAIL != "" {
+		page -= (page)
+		querySearch = fmt.Sprintf(`WHERE email ILIKE '%s'`, qEmail)
 	}
-	fmt.Println(query + querySearch)
-	fmt.Println(par.ORDER_BY)
 
-	response, errRes := pool.Query(context.Background(), query)
+	pagination := fmt.Sprintf(` ORDER BY %s LIMIT %s OFFSET %d`, par.ORDER_BY, par.LIMIT, page)
+
+	response, errRes := pool.Query(context.Background(), query+querySearch+pagination)
 	if errRes != nil {
 		fmt.Println(errRes.Error())
 	}
