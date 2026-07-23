@@ -206,3 +206,33 @@ func (u *UserRepo) Create(data *model.UserForm) *model.Users {
 
 	return users
 }
+
+func (u *UserRepo) GetByAttrs(data *model.Search) ([]*model.Users, error) {
+
+	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer pool.Close()
+
+	fmt.Println(data.Input)
+
+	input := fmt.Sprintf("%s", data.Input)
+	input = input + string("%")
+
+	response, resErr := pool.Query(context.Background(),
+		`SELECT * FROM "users" WHERE name LIKE $1 OR email LIKE $1 `,
+		input)
+	if resErr != nil {
+		fmt.Println(resErr.Error())
+		return nil, resErr
+	}
+
+	users, formErr := pgx.CollectRows(response, pgx.RowToAddrOfStructByName[model.Users])
+	if formErr != nil {
+		fmt.Println(formErr.Error())
+		return nil, formErr
+	}
+
+	return users, nil
+}

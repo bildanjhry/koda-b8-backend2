@@ -22,12 +22,7 @@ func (r *UserService) Create(data *model.UserForm) (*model.Users, error) {
 		return &model.Users{}, errors.New("Minimum password length 5")
 	}
 	res := r.repo.Create(data)
-	return &model.Users{
-		Id:        res.Id,
-		Name:      res.Name,
-		Email:     res.Email,
-		CreatedAt: res.CreatedAt,
-	}, nil
+	return res, nil
 }
 
 func (r *UserService) GetAll() ([]*model.Users, error) {
@@ -52,6 +47,11 @@ func (r *UserService) Edit(id *int64, data *model.UserEmail) (*model.Users, erro
 
 func (r *UserService) UploadPicture(id *int64, data *model.UserPicture) (*model.Users, error) {
 	res, err := r.repo.UploadPicture(id, data)
+	return res, err
+}
+
+func (r *UserService) GetByAttrs(data *model.Search) ([]*model.Users, error) {
+	res, err := r.repo.GetByAttrs(data)
 	return res, err
 }
 

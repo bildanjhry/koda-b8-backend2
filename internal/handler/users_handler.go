@@ -311,3 +311,46 @@ func (h *UserHandler) Login(ctx *gin.Context) {
 		},
 	})
 }
+
+// SearchUser godoc
+//
+//	@Summary		Search User
+//	@Description	Search User
+//	@Tags			users
+//	@Accept			x-www-form-urlencoded
+//	@Produce		json
+//	@Security		BearerAuth
+//	@Param 		search formData string true "Search"
+//	@Success		200	{object}	lib.Response
+//	@Failure		500	{object}	lib.Response
+//	@Router			/user/search [post]
+func (h *UserHandler) GetByAttrs(ctx *gin.Context) {
+	var form model.Search
+
+	errForm := ctx.ShouldBind(&form)
+	if errForm != nil {
+		ctx.JSON(http.StatusBadRequest, &lib.Response{
+			Success: false,
+			Status:  http.StatusBadRequest,
+			Message: errForm.Error(),
+		})
+		return
+	}
+
+	res, err := h.svc.GetByAttrs(&form)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, &lib.Response{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, &lib.Response{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "Success Get Data",
+		Results: res,
+	})
+}

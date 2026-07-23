@@ -184,6 +184,33 @@ paths:
       summary: Edit User Email
       tags:
       - users
+  /user/search:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Search User
+      parameters:
+      - description: Search
+        in: formData
+        name: search
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/lib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/lib.Response'
+      security:
+      - BearerAuth: []
+      summary: Search User
+      tags:
+      - users
   /user/upload-pic/{id}:
     patch:
       consumes:
